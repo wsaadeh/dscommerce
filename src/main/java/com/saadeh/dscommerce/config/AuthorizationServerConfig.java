@@ -1,8 +1,8 @@
 package com.saadeh.dscommerce.config;
 
-import com.devsaadeh.demo.config.customgrant.CustomPasswordAuthenticationConverter;
-import com.devsaadeh.demo.config.customgrant.CustomPasswordAuthenticationProvider;
-import com.devsaadeh.demo.config.customgrant.CustomUserAuthorities;
+import com.saadeh.dscommerce.config.customgrant.CustomPasswordAuthenticationConverter;
+import com.saadeh.dscommerce.config.customgrant.CustomPasswordAuthenticationProvider;
+import com.saadeh.dscommerce.config.customgrant.CustomUserAuthorities;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
