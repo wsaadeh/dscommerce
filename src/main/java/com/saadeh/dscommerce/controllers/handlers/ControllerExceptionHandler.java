@@ -4,6 +4,7 @@ import com.saadeh.dscommerce.dto.CustomError;
 import com.saadeh.dscommerce.dto.FieldMessage;
 import com.saadeh.dscommerce.dto.ValidationError;
 import com.saadeh.dscommerce.services.exceptions.DatabaseException;
+import com.saadeh.dscommerce.services.exceptions.ForbiddenException;
 import com.saadeh.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,15 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e,HttpServletRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(Instant.now(),status.value(),e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomError> database(MethodArgumentNotValidException e, HttpServletRequest request){
+    public ResponseEntity<CustomError> methodArgumentNotValidation(MethodArgumentNotValidException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError(Instant.now(),status.value(),"Dados inválidos",request.getRequestURI());
 
