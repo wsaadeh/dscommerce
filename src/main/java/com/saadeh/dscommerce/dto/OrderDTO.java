@@ -1,7 +1,6 @@
 package com.saadeh.dscommerce.dto;
 
 import com.saadeh.dscommerce.entities.Order;
-import com.saadeh.dscommerce.entities.OrderItem;
 import com.saadeh.dscommerce.entities.OrderStatus;
 import jakarta.validation.constraints.NotEmpty;
 

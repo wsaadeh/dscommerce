@@ -2,7 +2,6 @@ package com.saadeh.dscommerce.services;
 
 import com.saadeh.dscommerce.dto.OrderDTO;
 import com.saadeh.dscommerce.dto.OrderItemDTO;
-import com.saadeh.dscommerce.dto.ProductDTO;
 import com.saadeh.dscommerce.entities.Order;
 import com.saadeh.dscommerce.entities.OrderItem;
 import com.saadeh.dscommerce.entities.OrderStatus;
