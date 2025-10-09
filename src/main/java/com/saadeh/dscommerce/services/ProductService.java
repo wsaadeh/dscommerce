@@ -53,8 +53,6 @@ public class ProductService {
             copyDtoToEntity(productDTO,entity);
             entity = productRepository.save(entity);
             return new ProductDTO(entity);
-        }catch (HttpMessageConversionException e){
-            throw new ResourceNotFoundException("Recurso não encontrado.");
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Recurso não encontrado.");
         }
