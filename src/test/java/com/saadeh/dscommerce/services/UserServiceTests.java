@@ -55,7 +55,7 @@ public class UserServiceTests {
 
         Mockito.when(repository.searchUserAndRolesByEmail(userName)).thenReturn(listUserDetails);
         Mockito.when(repository.searchUserAndRolesByEmail(nonUserName)).thenReturn(new ArrayList<>());
-        
+
         Mockito.when(repository.findByEmail(userName)).thenReturn(Optional.of(user));
 
         Mockito.when(jwtPrincipal.getClaim("username")).thenReturn(userName);
