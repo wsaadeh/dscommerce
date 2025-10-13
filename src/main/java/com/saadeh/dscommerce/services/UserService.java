@@ -5,6 +5,7 @@ import com.saadeh.dscommerce.entities.Role;
 import com.saadeh.dscommerce.entities.User;
 import com.saadeh.dscommerce.projections.UserDetailsProjection;
 import com.saadeh.dscommerce.repositories.UserRepository;
+import com.saadeh.dscommerce.util.CustomUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private CustomUserUtil customUserUtil;
 
 
     @Override
@@ -44,10 +48,7 @@ public class UserService implements UserDetailsService {
 
     protected User authenticated(){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-            String username = jwtPrincipal.getClaim("username");
-
+            String username = customUserUtil.getLoggedUserName();
             User user = repository.findByEmail(username).get();
             return user;
         }catch (Exception e){
