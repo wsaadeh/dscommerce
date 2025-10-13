@@ -7,6 +7,7 @@ import com.saadeh.dscommerce.projections.UserDetailsProjection;
 import com.saadeh.dscommerce.repositories.UserRepository;
 import com.saadeh.dscommerce.tests.UserDetailsFactory;
 import com.saadeh.dscommerce.tests.UserFactory;
+import com.saadeh.dscommerce.util.CustomUserUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class UserServiceTests {
     private String nonUserName;
 
     @Mock
-    private Jwt jwtPrincipal;
+    private CustomUserUtil customUserUtil;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -58,7 +59,9 @@ public class UserServiceTests {
 
         Mockito.when(repository.findByEmail(userName)).thenReturn(Optional.of(user));
 
-        Mockito.when(jwtPrincipal.getClaim("username")).thenReturn(userName);
+        Mockito.when(customUserUtil.getLoggedUserName()).thenReturn(userName);
+
+        Mockito.doThrow(UsernameNotFoundException.class).when(repository).findByEmail(nonUserName);
 
     }
 
@@ -81,6 +84,13 @@ public class UserServiceTests {
     @Test
     public void authenticatedShouldReturnUserWhenUserIsLogged() {
         Assertions.assertDoesNotThrow(()->service.authenticated());
+    }
+
+    @Test
+    public void authenticatedShouldThrowUsernameNotFoundExceptionWhenUserDoesNotExist(){
+        Assertions.assertThrows(UsernameNotFoundException.class,()->{
+           service.authenticated();
+        });
     }
 
     @Test
