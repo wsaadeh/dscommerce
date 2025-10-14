@@ -107,6 +107,8 @@
 						<exclude>com/saadeh/dscommerce/dto/**</exclude>
 						<exclude>com/saadeh/dscommerce/controllers/handlers/**</exclude>
 						<exclude>com/saadeh/dscommerce/services/exceptions/**</exclude>
+						<exclude>com/saadeh/dscommerce/util/**</exclude>
+						<exclude>com/saadeh/dscommerce/controllers/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
