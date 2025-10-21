@@ -37,14 +37,27 @@ public class ProductControllerIT {
     @Autowired
     private TokenUtil tokenUtil;
 
+    //variables
     private String productName;
-    private Long existingProductId,nonExistingProductId;
+    private Long existingProductId, nonExistingProductId;
+
+    //entities
     private ProductDTO productDTO;
     private Product product;
+
+    //token
     private String username, password, bearerToken;
+    private String clientUsername, clientPassword, adminUsername, adminPassword;
+    private String clientToken, adminToken, invalidToken;
 
     @BeforeEach
     void setUp() throws Exception {
+
+        clientUsername = "maria@gmail.com";
+        clientPassword = "123456";
+        adminUsername = "alex@gmail.com";
+        adminPassword = "123456";
+
         productName = "Macbook";
         existingProductId = 1L;
         nonExistingProductId = 1000L;
@@ -55,6 +68,9 @@ public class ProductControllerIT {
         password = "123456";
 
         bearerToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+        adminToken = tokenUtil.obtainAccessToken(mockMvc, adminUsername, adminPassword);
+        clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUsername, clientPassword);
+        invalidToken = adminToken + "xpto";
     }
 
     @Test
@@ -115,7 +131,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndInvalidData() throws Exception{
+    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndInvalidData() throws Exception {
         product.setDescription("        ");
         product.setId(1L);
         productDTO = new ProductDTO(product);
@@ -133,7 +149,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndNameBlank() throws Exception{
+    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndNameBlank() throws Exception {
         product.setName("        ");
         product.setId(1L);
         productDTO = new ProductDTO(product);
@@ -151,7 +167,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndPriceNegative() throws Exception{
+    public void insertShouldReturnUnprocessableEntityWhenAdminAuthenticatedAndPriceNegative() throws Exception {
         product.setPrice(-1.0);
         product.setId(1L);
         productDTO = new ProductDTO(product);
@@ -173,7 +189,7 @@ public class ProductControllerIT {
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
         ResultActions resultActions =
-                mockMvc.perform(put("/products/{id}",existingProductId)
+                mockMvc.perform(put("/products/{id}", existingProductId)
                         .header("Authorization", "Bearer " + bearerToken)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -203,7 +219,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    public void deleteShouldReturnNoContentWhenIdExist() throws Exception{
+    public void deleteShouldReturnNoContentWhenIdExist() throws Exception {
         ResultActions resultActions =
                 mockMvc.perform(delete("/products/{id}", existingProductId)
                         .header("Authorization", "Bearer " + bearerToken)
